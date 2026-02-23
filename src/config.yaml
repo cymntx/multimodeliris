@@ -1,0 +1,22 @@
+# Multimodal Biometric Recognition - Configuration
+
+data_path: '/Users/cymntx/mlproject/dataset'  # Update this path to your dataset location
+num_people: 36  # Adjust based on dataset
+
+batch_size: 16
+num_workers: 2
+train_split: 0.7
+val_split: 0.15
+augment_train: true
+
+epochs: 50
+lr: 0.001
+weight_decay: 1e-5
+patience: 5
+
+dropout: 0.5
+
+seed: 42
+
+model_path: 'model.pth'
+checkpoint_dir: 'checkpoints'
