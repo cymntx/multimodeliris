@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 class BiometricDataset(Dataset):
     def __init__(
         self, base_path, num_people, transform_fp=None,
-        transform_iris=None, augment=False):
+        transform_iris=None, augment=False
+    ):
         if not os.path.exists(base_path):
             raise ValueError(
                 f"Dataset path does not exist: {base_path}"
@@ -37,20 +38,20 @@ class BiometricDataset(Dataset):
             left_path = os.path.join(person_path, "left")
             right_path = os.path.join(person_path, "right")
             fp_imgs = (
-                glob.glob(os.path.join(fp_path, "*.bmp")) + 
+                glob.glob(os.path.join(fp_path, "*.bmp")) +
                 glob.glob(os.path.join(fp_path, "*.BMP"))
             )
             left_imgs = (
-                glob.glob(os.path.join(left_path, "*.bmp")) + 
+                glob.glob(os.path.join(left_path, "*.bmp")) +
                 glob.glob(os.path.join(left_path, "*.BMP"))
             )
             right_imgs = (
-                glob.glob(os.path.join(right_path, "*.bmp")) + 
+                glob.glob(os.path.join(right_path, "*.bmp")) +
                 glob.glob(os.path.join(right_path, "*.BMP"))
             )
             if fp_imgs and left_imgs and right_imgs:
                 self.samples.append(
-                    (fp_imgs[0], left_imgs[0], right_imgs[0], 
+                    (fp_imgs[0], left_imgs[0], right_imgs[0],
                      person_id - 1)
                 )
             else:
@@ -58,7 +59,7 @@ class BiometricDataset(Dataset):
                 logger.debug(f"Skipping person {person_id}: missing images")
         load_time = time.time() - start_time
         logger.info(
-            f"Loaded {len(self.samples)} samples in" 
+            f"Loaded {len(self.samples)} samples in"
             f"{load_time:.2f}s (skipped {skipped})"
         )
         if len(self.samples) == 0:
