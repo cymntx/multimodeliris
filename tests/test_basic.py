@@ -7,7 +7,6 @@ sys.path.insert(
 )
 
 
-
 def test_model_initialization():
     model = MultiModalNet(num_classes=10, dropout=0.5)
     assert model is not None
