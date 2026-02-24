@@ -24,7 +24,7 @@ class BiometricDataset(Dataset):
         self.transform_iris = transform_iris
         self.augment = augment
         logger.info(
-            f"Loading dataset from {base_path} for " 
+            f"Loading dataset from {base_path} for "
             f"{num_people} people..."
         )
         start_time = time.time()
@@ -67,11 +67,9 @@ class BiometricDataset(Dataset):
                 "No valid samples found. Check dataset structure."
             )
 
-    
     def __len__(self):
         return len(self.samples)
 
-    
     def __getitem__(self, idx):
         fp_path, left_path, right_path, label = self.samples[idx]
         try:
