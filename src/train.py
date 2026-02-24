@@ -79,16 +79,24 @@ def train(config_path):
     )
     best_val_loss = float("inf")
     for epoch in range(config["epochs"]):
-        train_loss, train_acc = train_epoch(model, train_loader, criterion, optimizer, device)
-        val_loss, val_acc = validate_epoch(model, val_loader, criterion, device)
+        train_loss, train_acc = train_epoch(
+            model, train_loader, criterion, optimizer, device
+        )
+        val_loss, val_acc = validate_epoch(
+            model, val_loader, criterion, device
+        )
         logger.info(
-            f"Epoch {epoch + 1}/{config['epochs']} - Train Loss: {train_loss:.4f}, "
-            f"Train Acc: {train_acc:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}"
+            f"Epoch {epoch + 1}/{config['epochs']} - "
+            f"Train Loss: {train_loss:.4f}, "
+            f"Train Acc: {train_acc:.4f}, Val Loss: "
+            f"{val_loss:.4f}, Val Acc: {val_acc:.4f}"
         )
         scheduler.step(val_loss)
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             torch.save(model.state_dict(), config["model_path"])
             logger.info(f"Saved best model to {config['model_path']}")
+
+
 if __name__ == "__main__":
     train("src/config.yaml")
