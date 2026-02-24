@@ -5,10 +5,11 @@ import pytest
 import torch
 from PIL import Image
 import numpy as np
+from src.data import BiometricDataset, get_transforms, get_dataloaders
+
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 )
-from src.data import BiometricDataset, get_transforms, get_dataloaders
 
 
 def create_dummy_dataset(base_path: str, num_people: int = 3) -> None:
