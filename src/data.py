@@ -5,7 +5,7 @@ import time
 
 from PIL import Image
 import torch
-from torch.utils.data import Dataset, DataLoader, random_split
+from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
 
 logger = logging.getLogger(__name__)
