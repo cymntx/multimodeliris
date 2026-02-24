@@ -1,13 +1,13 @@
 import sys
 import os
-sys.path.insert(
-    0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
-)
 import tempfile
 import pytest
 import torch
 from PIL import Image
 import numpy as np
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+)
 from src.data import BiometricDataset, get_transforms, get_dataloaders
 
 
