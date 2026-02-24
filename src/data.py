@@ -99,7 +99,7 @@ def get_transforms(augment=False):
             transforms.ColorJitter(brightness=0.2, contrast=0.2),
             transforms.ToTensor(),
             transforms.Normalize(
-                mean=[0.485, 0.456, 0.406], 
+                mean=[0.485, 0.456, 0.406],
                 std=[0.229, 0.224, 0.225]
             ),
         ])
@@ -116,7 +116,7 @@ def get_transforms(augment=False):
             transforms.Resize((128, 128)),
             transforms.ToTensor(),
             transforms.Normalize(
-                mean=[0.485, 0.456, 0.406], 
+                mean=[0.485, 0.456, 0.406],
                 std=[0.229, 0.224, 0.225]
             ),
         ])
@@ -135,7 +135,7 @@ def get_dataloaders(
     train_split=0.7, val_split=0.15, augment_train=True
 ):
     logger.info(
-        f"Creating dataloaders with splits: " 
+        f"Creating dataloaders with splits: "
         f"train={train_split}, val={val_split}"
     )
     transform_fp, transform_iris = get_transforms(augment=False)
@@ -147,11 +147,11 @@ def get_dataloaders(
     val_size = int(val_split * total_size)
     test_size = total_size - train_size - val_size
     logger.info(
-        f"Split sizes - Train: {train_size}," 
+        f"Split sizes - Train: {train_size},"
         f"Val: {val_size}, Test: {test_size}"
     )
     train_dataset, val_dataset, test_dataset = random_split(
-        full_dataset, [train_size, val_size, test_size], 
+        full_dataset, [train_size, val_size, test_size],
         generator=torch.Generator().manual_seed(42)
     )
     if augment_train:
@@ -159,19 +159,18 @@ def get_dataloaders(
         train_dataset.dataset.transform_fp = transform_fp_aug
         train_dataset.dataset.transform_iris = transform_iris_aug
     train_loader = DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, 
-        num_workers=num_workers, pin_memory=torch.cuda.is_available(), 
+        train_dataset, batch_size=batch_size, shuffle=True,
+        num_workers=num_workers, pin_memory=torch.cuda.is_available(),
         persistent_workers=num_workers > 0
     )
     val_loader = DataLoader(
-        val_dataset, batch_size=batch_size, shuffle=False, 
-        num_workers=num_workers, pin_memory=torch.cuda.is_available(), 
+        val_dataset, batch_size=batch_size, shuffle=False,
+        num_workers=num_workers, pin_memory=torch.cuda.is_available(),
         persistent_workers=num_workers > 0
     )
     test_loader = DataLoader(
-        test_dataset, batch_size=batch_size, shuffle=False, 
-        num_workers=num_workers, pin_memory=torch.cuda.is_available(), 
+        test_dataset, batch_size=batch_size, shuffle=False,
+        num_workers=num_workers, pin_memory=torch.cuda.is_available(),
         persistent_workers=num_workers > 0
     )
     return train_loader, val_loader, test_loader
-    
