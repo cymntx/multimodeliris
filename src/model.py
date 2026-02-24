@@ -5,6 +5,7 @@ import torch.nn.functional as F
 
 logger = logging.getLogger(__name__)
 
+
 class IrisBranch(nn.Module):
     def __init__(self):
         super().__init__()
@@ -23,6 +24,7 @@ class IrisBranch(nn.Module):
         x = self.pool2(x)
         x = self.gap(x)
         return x.view(x.size(0), -1)
+
 
 class FingerBranch(nn.Module):
     def __init__(self):
@@ -43,6 +45,7 @@ class FingerBranch(nn.Module):
         x = self.gap(x)
         return x.view(x.size(0), -1)
 
+
 class MultiModalNet(nn.Module):
     def __init__(self, num_classes, dropout=0.5):
         super().__init__()
@@ -60,7 +63,9 @@ class MultiModalNet(nn.Module):
     def _init_weights(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+                nn.init.kaiming_normal_(
+                    m.weight, mode="fan_out", nonlinearity="relu"
+                )
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
             elif isinstance(m, nn.Linear):
