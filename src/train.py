@@ -10,8 +10,11 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from data import get_dataloaders
 from model import MultiModalNet
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
+
 
 def set_seed(seed):
     random.seed(seed)
@@ -21,6 +24,7 @@ def set_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     logger.info(f"Random seed set to {seed}")
+
 
 def train_epoch(model, loader, criterion, optimizer, device):
     model.train()
@@ -36,6 +40,7 @@ def train_epoch(model, loader, criterion, optimizer, device):
         correct += (outputs.argmax(1) == labels).sum().item()
     return total_loss / len(loader.dataset), correct / len(loader.dataset)
 
+
 def validate_epoch(model, loader, criterion, device):
     model.eval()
     total_loss, correct = 0, 0
@@ -47,6 +52,7 @@ def validate_epoch(model, loader, criterion, device):
             total_loss += loss.item() * fp.size(0)
             correct += (outputs.argmax(1) == labels).sum().item()
     return total_loss / len(loader.dataset), correct / len(loader.dataset)
+
 
 def train(config_path):
     with open(config_path, "r") as f:
@@ -64,14 +70,20 @@ def train(config_path):
     )
     model = MultiModalNet(config["num_people"], config["dropout"]).to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=float(config["lr"]), weight_decay=float(config["weight_decay"]))
-    scheduler = ReduceLROnPlateau(optimizer, mode="min", patience=config["patience"], verbose=True)
+    optimizer = optim.Adam(
+        model.parameters(), lr=float(config["lr"]),
+        weight_decay=float(config["weight_decay"])
+    )
+    scheduler = ReduceLROnPlateau(
+        optimizer, mode="min", patience=config["patience"], verbose=True
+    )
     best_val_loss = float("inf")
     for epoch in range(config["epochs"]):
         train_loss, train_acc = train_epoch(model, train_loader, criterion, optimizer, device)
         val_loss, val_acc = validate_epoch(model, val_loader, criterion, device)
         logger.info(
-            f"Epoch {epoch + 1}/{config['epochs']} - Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}"
+            f"Epoch {epoch + 1}/{config['epochs']} - Train Loss: {train_loss:.4f}, "
+            f"Train Acc: {train_acc:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}"
         )
         scheduler.step(val_loss)
         if val_loss < best_val_loss:
