@@ -1,4 +1,3 @@
-import os
 import logging
 import random
 import yaml
@@ -11,7 +10,8 @@ from data import get_dataloaders
 from model import MultiModalNet
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
