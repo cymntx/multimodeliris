@@ -9,9 +9,11 @@ from model import MultiModalNet
 from data import get_dataloaders
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
 
 def infer(
     model: torch.nn.Module, loader: torch.utils.data.DataLoader, device: torch.device
@@ -34,16 +36,22 @@ def infer(
 
     return all_preds, all_labels
 
+
 def main():
-    config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
+    config_path = os.path.join(
+        os.path.dirname(__file__), "config.yaml"
+    )
     with open(config_path) as f:
         cfg = yaml.safe_load(f)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )
     logger.info(f"Using device: {device}")
 
     _, _, test_loader = get_dataloaders(
-        cfg["data_path"], cfg["num_people"], cfg["batch_size"], cfg["num_workers"]
+        cfg["data_path"], cfg["num_people"],
+        cfg["batch_size"], cfg["num_workers"]
     )
 
     model = MultiModalNet(cfg["num_people"]).to(device)
