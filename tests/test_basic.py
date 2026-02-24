@@ -1,15 +1,19 @@
 import pytest
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+import torch
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'))
+)
 from model import MultiModalNet
+
 
 def test_model_initialization():
     model = MultiModalNet(num_classes=10, dropout=0.5)
     assert model is not None
 
+
 def test_model_forward():
-    import torch
     model = MultiModalNet(num_classes=10, dropout=0.5)
     fp = torch.randn(4, 3, 128, 128)  # Batch size of 4
     left = torch.randn(4, 1, 64, 64)
