@@ -6,6 +6,7 @@ from PIL import Image
 import numpy as np
 from src.data import BiometricDataset, get_transforms, get_dataloaders
 
+
 def create_dummy_dataset(base_path: str, num_people: int = 3) -> None:
     for person_id in range(1, num_people + 1):
         person_path = os.path.join(base_path, str(person_id))
@@ -19,30 +20,42 @@ def create_dummy_dataset(base_path: str, num_people: int = 3) -> None:
         os.makedirs(left_path, exist_ok=True)
         os.makedirs(right_path, exist_ok=True)
 
-        fp_img = Image.fromarray(np.random.randint(0, 255, (128, 128, 3), dtype=np.uint8))
-        left_img = Image.fromarray(np.random.randint(0, 255, (64, 64), dtype=np.uint8))
-        right_img = Image.fromarray(np.random.randint(0, 255, (64, 64), dtype=np.uint8))
+        fp_img = Image.fromarray(
+            np.random.randint(0, 255, (128, 128, 3), dtype=np.uint8)
+        )
+        left_img = Image.fromarray(
+            np.random.randint(0, 255, (64, 64), dtype=np.uint8)
+        )
+        right_img = Image.fromarray(
+            np.random.randint(0, 255, (64, 64), dtype=np.uint8)
+        )
 
         fp_img.save(os.path.join(fp_path, 'fp.bmp'))
         left_img.save(os.path.join(left_path, 'left.bmp'))
         right_img.save(os.path.join(right_path, 'right.bmp'))
+
 
 def test_dataset_creation():
     with tempfile.TemporaryDirectory() as tmpdir:
         create_dummy_dataset(tmpdir, num_people=5)
 
         transform_fp, transform_iris = get_transforms(augment=False)
-        dataset = BiometricDataset(tmpdir, 5, transform_fp, transform_iris)
+        dataset = BiometricDataset(
+            tmpdir, 5, transform_fp, transform_iris
+        )
 
         assert len(dataset) == 5
         assert isinstance(dataset, BiometricDataset)
+
 
 def test_dataset_getitem():
     with tempfile.TemporaryDirectory() as tmpdir:
         create_dummy_dataset(tmpdir, num_people=3)
 
         transform_fp, transform_iris = get_transforms(augment=False)
-        dataset = BiometricDataset(tmpdir, 3, transform_fp, transform_iris)
+        dataset = BiometricDataset(
+            tmpdir, 3, transform_fp, transform_iris
+        )
 
         fp, left, right, label = dataset[0]
 
@@ -55,6 +68,7 @@ def test_dataset_getitem():
         assert left.shape == (1, 64, 64)
         assert right.shape == (1, 64, 64)
         assert 0 <= label < 3
+
 
 def test_get_dataloaders():
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -74,6 +88,9 @@ def test_get_dataloaders():
             assert fp.shape[0] <= 2
             break
 
+
 def test_invalid_dataset_path():
-    with pytest.raises(ValueError, match="Dataset path does not exist"):
+    with pytest.raises(
+        ValueError, match="Dataset path does not exist"
+    ):
         BiometricDataset("invalid_path", 5)
