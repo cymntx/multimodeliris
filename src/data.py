@@ -1,12 +1,12 @@
-import os
+import glob
 import logging
+import os
 import time
+from PIL import Image
 import torch
 from torch.utils.data import Dataset, DataLoader, random_split
 from torchvision import transforms
-from PIL import Image
-import glob
-
+    
 logger = logging.getLogger(__name__)
 
 
