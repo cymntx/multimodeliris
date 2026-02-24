@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 def infer(
-    model: torch.nn.Module, loader: torch.utils.data.DataLoader, device: torch.device
+    model: torch.nn.Module, loader: torch.utils.data.DataLoader,
+    device: torch.device
 ) -> Tuple[List[int], List[int]]:
     model.eval()
     all_preds = []
@@ -64,7 +65,9 @@ def main():
         logger.info(f"Checkpoint from epoch {checkpoint['epoch']} loaded")
     elif os.path.exists(cfg["model_path"]):
         logger.info(f"Loading model from {cfg['model_path']}")
-        model.load_state_dict(torch.load(cfg["model_path"], map_location=device))
+        model.load_state_dict(
+            torch.load(cfg["model_path"], map_location=device)
+        )
     else:
         logger.error("No trained model found. Please train the model first.")
         return
@@ -83,6 +86,7 @@ def main():
     print(cm)
 
     logger.info("Inference complete.")
+
 
 if __name__ == "__main__":
     main()
